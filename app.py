@@ -110,7 +110,7 @@ else:
             elif presion_v > presion_l + 5 and alerta_id not in st.session_state.alertas_enviadas:
                 msg = f"🏆 *{nombre_liga}* 🏆\n⚽ *ALERTA DE GOL REAL TIME* ⚽\n\n📌 *Partido:* {local} vs {visitante}\n⏱️ *Minuto:* {tiempo}'\n🔥 *Presión:* {visitante} domina el ataque con {tiros_v} remates directos. ¡Se acerca el gol visitante!"
                 enviar_alerta_telegram(msg)
-                st.session_state.add(alerta_id)
+                st.session_state.alertas_enviadas.add(alerta_id)
                 st.success("🚨 Análisis real enviado a tu Telegram.")
 
 # Actualización automática cada 60 segundos
