@@ -15,6 +15,21 @@ st.set_page_config(page_title="IA Predictor Pro - Real Time", layout="wide")
 st.title("🇨🇴 Live Predictor: Fútbol Profesional Real")
 st.write("Analizando datos en vivo de la Liga BetPlay, Europa y las mejores ligas del mundo.")
 
+def enviar_alerta_telegram(mensaje):
+    url = f"https://telegram.org{TELEGRAM_TOKEN}/sendMessage"
+    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": mensaje, "parse_mode": "Markdown"}
+    try: 
+        requests.post(url, json=payload)
+    except: 
+        pass
+
+# --- 🚀 BOTÓN DE PRUEBA EN VIVO PARA TU CELULAR ---
+st.subheader("🛠️ Panel de Control de Alertas")
+if st.button("📲 FORZAR MENSAJE DE PRUEBA A TELEGRAM"):
+    enviar_alerta_telegram("🚀 *¡Conexión Exitosa!* Tu aplicación de fútbol en tiempo real está enlazada correctamente con tu celular. ¡Listo para recibir pronósticos de goles!")
+    st.success("¡Mensaje de prueba enviado! Revisa tu chat privado con tu bot de Telegram.")
+st.divider()
+
 # IDs oficiales para las mejores ligas
 LIGAS_ELITE_IDS = {
     39: "Premier League (Inglaterra)",
@@ -26,14 +41,6 @@ LIGAS_ELITE_IDS = {
     13: "Copa Libertadores",
     239: "Liga BetPlay (Colombia)"
 }
-
-def enviar_alerta_telegram(mensaje):
-    url = f"https://telegram.org{TELEGRAM_TOKEN}/sendMessage"
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": mensaje, "parse_mode": "Markdown"}
-    try: 
-        requests.post(url, json=payload)
-    except: 
-        pass
 
 def obtener_partidos_reales():
     try:
@@ -103,7 +110,7 @@ else:
             elif presion_v > presion_l + 5 and alerta_id not in st.session_state.alertas_enviadas:
                 msg = f"🏆 *{nombre_liga}* 🏆\n⚽ *ALERTA DE GOL REAL TIME* ⚽\n\n📌 *Partido:* {local} vs {visitante}\n⏱️ *Minuto:* {tiempo}'\n🔥 *Presión:* {visitante} domina el ataque con {tiros_v} remates directos. ¡Se acerca el gol visitante!"
                 enviar_alerta_telegram(msg)
-                st.session_state.alertas_enviadas.add(alerta_id)
+                st.session_state.add(alerta_id)
                 st.success("🚨 Análisis real enviado a tu Telegram.")
 
 # Actualización automática cada 60 segundos
